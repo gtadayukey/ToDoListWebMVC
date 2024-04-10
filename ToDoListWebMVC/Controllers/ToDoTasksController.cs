@@ -28,8 +28,23 @@ namespace ToDoListWebMVC.Controllers
             return View(listToDoTasks);
         }
 
+        // GET - CREATE
         public IActionResult Create()
         {
+            return View();
+        }
+
+        // GET - CREATE
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(ToDoTask toDoTask)
+        {
+            if(!ModelState.IsValid)
+            {
+                return View(toDoTask);
+            }
+
+            await _toDoTaskService.InsertAsync(toDoTask);
             return View();
         }
     }

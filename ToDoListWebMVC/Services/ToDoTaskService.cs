@@ -13,10 +13,15 @@ namespace ToDoListWebMVC.Services
             _context = context;
         }
 
-        // GET - READ
         public async Task<ICollection<ToDoTask>> GetAllAsync()
         {
             return await _context.ToDoTask.OrderBy(x => x.Date).ToListAsync();
+        }
+
+        public async Task InsertAsync(ToDoTask toDoTask)
+        {
+            await _context.ToDoTask.AddAsync(toDoTask);
+            _context.SaveChanges();
         }
     }
 }

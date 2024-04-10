@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using ToDoListWebMVC.Models.ValidationAttributes;
 
 namespace ToDoListWebMVC.Models
 {
@@ -12,10 +13,11 @@ namespace ToDoListWebMVC.Models
         public string? Description { get; set; }
 
         [Required(ErrorMessage = "{0} required")]
+        [FutureDate("Date")]
         public DateOnly Date { get; set; }
         public TimeOnly? Time { get; set; }
 
-        public ToDoTask() { }
+        public ToDoTask() {}
 
         public ToDoTask(string title, string description, DateOnly date, TimeOnly time)
         {
