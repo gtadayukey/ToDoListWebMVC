@@ -1,4 +1,6 @@
-﻿@*
+﻿@model IEnumerable<ToDoListWebMVC.Models.ToDoTask>
+
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
@@ -6,3 +8,52 @@
 }
 
 <h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-light">Create New</a>
+</p>
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr class="table-light">
+            <th class="text-dark">
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th class="text-dark">
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th class="text-dark">
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th class="text-dark">
+                @Html.DisplayNameFor(model => model.Time)
+            </th>
+            <th class="text-dark">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var task in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => task.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => task.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => task.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => task.Time)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@task.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@task.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@task.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
