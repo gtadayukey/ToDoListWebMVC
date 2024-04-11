@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.EntityFrameworkCore;
-using NuGet.Protocol.Plugins;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Data;
-using System.Threading.Tasks;
 using ToDoListWebMVC.Data;
 using ToDoListWebMVC.Models;
 

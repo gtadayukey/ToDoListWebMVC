@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.View;
+using NuGet.Protocol.Plugins;
 using ToDoListWebMVC.Data;
 using ToDoListWebMVC.Models;
+using ToDoListWebMVC.Models.ViewModels;
 using ToDoListWebMVC.Services;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -50,31 +54,65 @@ namespace ToDoListWebMVC.Controllers
         }
 
         // GET - READ
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int? id)
         {
-            ToDoTask task = await _toDoTaskService.GetByIdAsync(id);
+            if (id == null)
+            {
+                return RedirectToAction(nameof(Error), new { msg = "Id not provided" });
+            }
+
+            ToDoTask task = await _toDoTaskService.GetByIdAsync(id.Value);
+
+            if (task == null)
+            {
+                return RedirectToAction(nameof(Error), new { msg = "Id not found" });
+            }
+
             return View(task);
         }
 
         // GET - UPDATE
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int? id)
         {
-            ToDoTask task = await _toDoTaskService.GetByIdAsync(id);
+            if (id == null)
+            {
+                return RedirectToAction(nameof(Error), new { msg = "Id not provided" });
+            }
+
+            ToDoTask task = await _toDoTaskService.GetByIdAsync(id.Value);
+
+            if (task == null)
+            {
+                return RedirectToAction(nameof(Error), new { msg = "Id not found" });
+            }
+
             return View(task);
         }
 
         // POST - UPDATE
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(ToDoTask task)
+        public async Task<IActionResult> Edit(int id, ToDoTask task)
         {
             if (!ModelState.IsValid)
             {
                 return View(task);
             }
 
-            await _toDoTaskService.UpdateAsync(task);
-            return RedirectToAction(nameof(Index));
+            if (id != task.Id)
+            {
+                return RedirectToAction(nameof(Error), new { msg = "Id mismatch" });
+            }
+
+            try
+            {
+                await _toDoTaskService.UpdateAsync(task);
+                return RedirectToAction(nameof(Index));
+            }
+            catch(ApplicationException e)
+            {
+                return RedirectToAction(nameof(Error), new { msg = e.Message });
+            }
         }
 
         // GET - DELETE
@@ -82,7 +120,7 @@ namespace ToDoListWebMVC.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { msg = "Id not found" });
             }
 
             ToDoTask task = await _toDoTaskService.GetByIdAsync(id.Value);
@@ -102,6 +140,17 @@ namespace ToDoListWebMVC.Controllers
         {
             await _toDoTaskService.RemoveAsync(id);
             return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Error(string msg)
+        {
+            var viewModel = new ErrorViewModel
+            {
+                ErrorMessage = msg,
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
+
+            return View(viewModel);
         }
     }
 }
