@@ -1,0 +1,48 @@
+﻿@model ToDoListWebMVC.Models.ToDoTask;
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Details";
+    ViewData["Subtitle"] = "Task";
+}
+
+<h1>@ViewData["Title"]</h1>
+<h3>@ViewData["Subtitle"]</h3>
+
+<hr />
+
+<div>
+    <dl class="list-group-horizontal-md">
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Time)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Time)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-light mt-3">Edit</a>
+    <br />
+    <a asp-action="Index" class="btn btn-light mt-3">Back</a>
+</div>

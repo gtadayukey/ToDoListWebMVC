@@ -45,7 +45,15 @@ namespace ToDoListWebMVC.Controllers
             }
 
             await _toDoTaskService.InsertAsync(toDoTask);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index)); 
         }
+
+        // GET - READ
+        public async Task<IActionResult> Details(int id)
+        {
+            ToDoTask task = await _toDoTaskService.GetByIdAsync(id);
+            return View(task);
+        }
+
     }
 }

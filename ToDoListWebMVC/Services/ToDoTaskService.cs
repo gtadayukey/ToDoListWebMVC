@@ -23,5 +23,10 @@ namespace ToDoListWebMVC.Services
             await _context.ToDoTask.AddAsync(toDoTask);
             _context.SaveChanges();
         }
+
+        public async Task<ToDoTask> GetByIdAsync(int id)
+        {
+            return await _context.ToDoTask.FirstOrDefaultAsync(x => x.Id == id);
+        }
     }
 }

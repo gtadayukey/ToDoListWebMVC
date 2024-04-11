@@ -18,8 +18,9 @@ namespace ToDoListWebMVC.Models
         [Required(ErrorMessage = "{0} required")]
         [DataType(DataType.Date)]
         [FutureDate("Date")]
-        public DateOnly Date { get; set; }
+        public DateOnly? Date { get; set; }
 
+        [Required(ErrorMessage = "{0} required")]
         [DataType(DataType.Time)]
         public TimeOnly? Time { get; set; }
 
@@ -34,3 +35,5 @@ namespace ToDoListWebMVC.Models
         }
     }
 }
+
+
