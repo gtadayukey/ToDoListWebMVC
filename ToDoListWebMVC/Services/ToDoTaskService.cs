@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol.Plugins;
 using System.Data;
+using System.Threading.Tasks;
 using ToDoListWebMVC.Data;
 using ToDoListWebMVC.Models;
 
@@ -42,6 +43,13 @@ namespace ToDoListWebMVC.Services
             }
 
             _context.Update(task);
+            await _context.SaveChangesAsync();
+        }
+
+        internal async Task RemoveAsync(int id)
+        {
+            var task = await GetByIdAsync(id);
+            _context.ToDoTask.Remove(task);
             await _context.SaveChangesAsync();
         }
     }

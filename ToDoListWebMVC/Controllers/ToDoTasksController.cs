@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ToDoListWebMVC.Data;
 using ToDoListWebMVC.Models;
 using ToDoListWebMVC.Services;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ToDoListWebMVC.Controllers
 {
@@ -37,14 +38,14 @@ namespace ToDoListWebMVC.Controllers
         // POST - CREATE
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ToDoTask toDoTask)
+        public async Task<IActionResult> Create(ToDoTask task)
         {
             if(!ModelState.IsValid)
             {
-                return View(toDoTask);
+                return View(task);
             }
 
-            await _toDoTaskService.InsertAsync(toDoTask);
+            await _toDoTaskService.InsertAsync(task);
             return RedirectToAction(nameof(Index)); 
         }
 
@@ -65,14 +66,41 @@ namespace ToDoListWebMVC.Controllers
         // POST - UPDATE
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(ToDoTask toDoTask)
+        public async Task<IActionResult> Edit(ToDoTask task)
         {
             if (!ModelState.IsValid)
             {
-                return View(toDoTask);
+                return View(task);
             }
 
-            await _toDoTaskService.UpdateAsync(toDoTask);
+            await _toDoTaskService.UpdateAsync(task);
+            return RedirectToAction(nameof(Index));
+        }
+
+        // GET - DELETE
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            ToDoTask task = await _toDoTaskService.GetByIdAsync(id.Value);
+
+            if(task == null)
+            {
+                return NotFound();
+            }
+
+            return View(task);
+        }
+
+        // POST - DELETE
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _toDoTaskService.RemoveAsync(id);
             return RedirectToAction(nameof(Index));
         }
     }
