@@ -55,5 +55,25 @@ namespace ToDoListWebMVC.Controllers
             return View(task);
         }
 
+        // GET - UPDATE
+        public async Task<IActionResult> Edit(int id)
+        {
+            ToDoTask task = await _toDoTaskService.GetByIdAsync(id);
+            return View(task);
+        }
+
+        // POST - UPDATE
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(ToDoTask toDoTask)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(toDoTask);
+            }
+
+            await _toDoTaskService.UpdateAsync(toDoTask);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
