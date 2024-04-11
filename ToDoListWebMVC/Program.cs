@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using ToDoListWebMVC.Data;
 using ToDoListWebMVC.Services;
 
@@ -12,7 +14,18 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<ToDoTaskService>();
 }
 
+
 var app = builder.Build();
+
+var ptBR = new CultureInfo("pt-BR");
+var localizationSettings = new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture(ptBR),
+    SupportedCultures = [ptBR],
+    SupportedUICultures = [ptBR]
+};
+
+app.UseRequestLocalization(localizationSettings);
 
 if (!app.Environment.IsDevelopment())
 {
@@ -20,17 +33,16 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-{
-    app.Services.CreateScope().ServiceProvider.GetRequiredService<SeedingService>().Seed();
-    app.UseHttpsRedirection();
-    app.UseStaticFiles();
-    app.UseRouting();
-    app.UseAuthorization();
-    app.MapControllerRoute(
-        name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}");
-    app.Run();
-}
+app.Services.CreateScope().ServiceProvider.GetRequiredService<SeedingService>().Seed();
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRouting();
+app.UseAuthorization();
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.Run();
+
 
 
 
