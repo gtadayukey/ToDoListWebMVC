@@ -34,7 +34,7 @@ namespace ToDoListWebMVC.Controllers
             return View();
         }
 
-        // GET - CREATE
+        // POST - CREATE
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ToDoTask toDoTask)
@@ -45,7 +45,7 @@ namespace ToDoListWebMVC.Controllers
             }
 
             await _toDoTaskService.InsertAsync(toDoTask);
-            return View();
+            return RedirectToAction(nameof(Index));
         }
     }
 }

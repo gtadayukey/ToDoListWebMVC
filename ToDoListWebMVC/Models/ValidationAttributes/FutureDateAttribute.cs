@@ -20,7 +20,7 @@ namespace ToDoListWebMVC.Models.ValidationAttributes
 
             var currentDate = DateOnly.FromDateTime(DateTime.Today);
 
-            if (date < currentDate)
+            if (date <= currentDate)
             {
                 return new ValidationResult($"{validationContext.DisplayName} must be a future date.");
             }

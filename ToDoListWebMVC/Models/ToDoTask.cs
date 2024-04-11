@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using ToDoListWebMVC.Models.ValidationAttributes;
 
 namespace ToDoListWebMVC.Models
@@ -8,10 +9,10 @@ namespace ToDoListWebMVC.Models
         public int Id { get; set; }
 
         [Required(ErrorMessage = "{0} required")]
-        [StringLength(20, MinimumLength = 3, ErrorMessage = "{0} size should be between {2} and {1}")]
+        [StringLength(30, MinimumLength = 3, ErrorMessage = "{0} size should be between {2} and {1}")]
         public string Title { get; set; }
 
-        [DisplayFormat(NullDisplayText = "No Description")]
+        [DisplayFormat(NullDisplayText = "No Description", ConvertEmptyStringToNull = true)]
         public string? Description { get; set; }
 
         [Required(ErrorMessage = "{0} required")]
@@ -19,7 +20,6 @@ namespace ToDoListWebMVC.Models
         [FutureDate("Date")]
         public DateOnly Date { get; set; }
 
-        [DisplayFormat(NullDisplayText = "Without Time")]
         [DataType(DataType.Time)]
         public TimeOnly? Time { get; set; }
 
